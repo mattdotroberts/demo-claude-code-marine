@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matt Roberts — AI & Automation for Teams</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --teal: #1A5C52;
+            --teal-light: #2A7A6E;
+            --teal-wash: #E8F4F1;
+            --teal-faint: #F4FAF8;
+            --ink: #1A1A1A;
+            --ink-soft: #4A4A4A;
+            --ink-muted: #8A8A8A;
+            --cream: #FAFAF8;
+            --white: #FFFFFF;
+            --rule: #E5E5E0;
+            --serif: 'DM Serif Display', Georgia, serif;
+            --sans: 'Outfit', -apple-system, sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Subtle dot pattern overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(26,92,82,0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ═══════════ NAV ═══════════ */
+        nav {
+            padding: 28px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-name {
+            font-family: var(--serif);
+            font-size: 1.15rem;
+            color: var(--ink);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--ink-muted);
+            text-decoration: none;
+            transition: color 0.25s;
+            letter-spacing: 0.01em;
+        }
+
+        .nav-links a:hover {
+            color: var(--teal);
+        }
+
+        .nav-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--rule);
+            border-radius: 50%;
+        }
+
+        /* ═══════════ HERO ═══════════ */
+        .hero {
+            padding: 100px 0 80px;
+            position: relative;
+        }
+
+        /* Decorative corner accent */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            border: 1.5px solid var(--teal-wash);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 80px;
+            right: -20px;
+            width: 80px;
+            height: 80px;
+            background: var(--teal-wash);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 6s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .hero-location {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--teal);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.1s;
+        }
+
+        .hero-location::before {
+            content: '';
+            width: 24px;
+            height: 1.5px;
+            background: var(--teal);
+        }
+
+        h1 {
+            font-family: var(--serif);
+            font-size: clamp(2.8rem, 6.5vw, 4.2rem);
+            font-weight: 400;
+            line-height: 1.12;
+            letter-spacing: -0.025em;
+            color: var(--ink);
+            margin-bottom: 28px;
+            max-width: 650px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.25s;
+        }
+
+        h1 em {
+            font-style: italic;
+            color: var(--teal);
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            font-weight: 300;
+            color: var(--ink-soft);
+            max-width: 500px;
+            line-height: 1.7;
+            margin-bottom: 44px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.4s;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.55s;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ═══════════ BUTTONS ═══════════ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 30px;
+            border-radius: 100px;
+            font-family: var(--sans);
+            font-size: 0.92rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            border: none;
+            letter-spacing: 0.01em;
+        }
+
+        .btn-primary {
+            background: var(--teal);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--teal-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(26, 92, 82, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--ink);
+            border: 1.5px solid var(--rule);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+            transform: translateY(-2px);
+        }
+
+        .btn svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover svg {
+            transform: translateX(3px);
+        }
+
+        /* ═══════════ DIVIDER ═══════════ */
+        .divider {
+            border: none;
+            height: 1px;
+            background: var(--rule);
+            margin: 0;
+        }
+
+        /* ═══════════ ABOUT ═══════════ */
+        .about {
+            padding: 72px 0;
+        }
+
+        .section-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--teal);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--rule);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .about-text {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: var(--ink-soft);
+            line-height: 1.75;
+        }
+
+        .about-text strong {
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        .about-aside {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stat-block {
+            padding: 20px 24px;
+            background: var(--white);
+            border: 1px solid var(--rule);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-block:hover {
+            border-color: rgba(26, 92, 82, 0.2);
+            box-shadow: 0 4px 20px rgba(26, 92, 82, 0.06);
+        }
+
+        .stat-number {
+            font-family: var(--serif);
+            font-size: 1.6rem;
+            color: var(--teal);
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 0.82rem;
+            color: var(--ink-muted);
+            font-weight: 400;
+        }
+
+        /* ═══════════ PROJECTS ═══════════ */
+        .projects {
+            padding: 72px 0 80px;
+        }
+
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .project-card {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 24px;
+            padding: 28px 32px;
+            background: var(--white);
+            border: 1px solid var(--rule);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--ink);
+            transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--teal);
+            transform: scaleY(0);
+            transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+            border-radius: 0 2px 2px 0;
+        }
+
+        .project-card:hover {
+            border-color: rgba(26, 92, 82, 0.15);
+            box-shadow: 0 8px 32px rgba(26, 92, 82, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .project-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .project-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--teal-faint);
+            border: 1px solid var(--teal-wash);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-icon {
+            background: var(--teal-wash);
+        }
+
+        .project-info h3 {
+            font-family: var(--serif);
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 3px;
+        }
+
+        .project-info p {
+            font-size: 0.9rem;
+            color: var(--ink-muted);
+            font-weight: 300;
+        }
+
+        .project-arrow {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--rule);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            color: var(--ink-muted);
+        }
+
+        .project-arrow svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-arrow {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: var(--white);
+        }
+
+        .project-card:hover .project-arrow svg {
+            transform: translateX(2px);
+        }
+
+        /* ═══════════ FOOTER ═══════════ */
+        footer {
+            padding: 48px 0;
+            position: relative;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .footer-name {
+            font-family: var(--serif);
+            font-size: 1rem;
+            color: var(--ink);
+        }
+
+        .footer-note {
+            font-size: 0.8rem;
+            color: var(--ink-muted);
+            font-weight: 300;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--ink-muted);
+            text-decoration: none;
+            transition: color 0.25s;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--teal);
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--teal);
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ═══════════ SCROLL REVEAL ═══════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ═══════════ RESPONSIVE ═══════════ */
+        @media (max-width: 640px) {
+            .container { padding: 0 20px; }
+            .hero { padding: 60px 0 60px; }
+            .hero::before, .hero::after { display: none; }
+            .about-grid { grid-template-columns: 1fr; gap: 32px; }
+            .project-card { grid-template-columns: 1fr auto; gap: 16px; padding: 22px 20px; }
+            .project-icon { display: none; }
+            .hero-ctas { flex-direction: column; }
+            .btn { justify-content: center; }
+            .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
+            .nav-links { gap: 16px; }
+            .nav-links a { font-size: 0.82rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="#" class="nav-name">Matt Roberts</a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <div class="nav-dot"></div>
+            <a href="#projects">Projects</a>
+            <div class="nav-dot"></div>
+            <a href="mailto:matt@happyoperators.com">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-location">Barcelona, Spain</div>
+        <h1>Building <em>smarter systems</em> with AI&nbsp;&&nbsp;no&#8209;code</h1>
+        <p class="hero-sub">I help founders and teams design AI workflows, automations, and custom tools that save time, cut costs, and actually scale.</p>
+        <div class="hero-ctas">
+            <a href="https://happyoperators.com" class="btn btn-primary" target="_blank">
+                Work with me
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+            </a>
+            <a href="https://createwith.com" class="btn btn-secondary" target="_blank">
+                Join the newsletter
+            </a>
+        </div>
+    </div>
+</section>
+
+<div class="container"><hr class="divider"></div>
+
+<section class="about" id="about">
+    <div class="container">
+        <p class="section-label reveal">About</p>
+        <div class="about-grid">
+            <div class="reveal">
+                <p class="about-text"><strong>I'm Matt Roberts</strong> — consultant, founder, and teacher based in Barcelona. Over the past few years I've delivered AI and automation solutions for startups to enterprises, building with tools like <strong>n8n, Zapier, OpenAI, Notion, and Slack</strong>.</p>
+                <br>
+                <p class="about-text">Beyond client work, I teach teams and individuals how to build their own solutions. I've spoken inside companies, taught in schools, and worked with government programs supporting job seekers and entrepreneurs.</p>
+            </div>
+            <div class="about-aside reveal">
+                <div class="stat-block">
+                    <div class="stat-number">4.8 ★</div>
+                    <div class="stat-label">Workshop rating on Maven</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number">AI & No-Code</div>
+                    <div class="stat-label">Workflows, automations & custom tools</div>
+                </div>
+                <div class="stat-block">
+                    <div class="stat-number">10+ years</div>
+                    <div class="stat-label">In product, tech & business</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container"><hr class="divider"></div>
+
+<section class="projects" id="projects">
+    <div class="container">
+        <p class="section-label reveal">What I'm building</p>
+        <div class="projects-grid">
+            <a href="https://happyoperators.com" class="project-card reveal" target="_blank">
+                <div class="project-icon">⚡</div>
+                <div class="project-info">
+                    <h3>Happy Operators</h3>
+                    <p>AI + automation consultancy helping businesses scale without chaos</p>
+                </div>
+                <div class="project-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                </div>
+            </a>
+            <a href="https://createwith.com" class="project-card reveal" target="_blank">
+                <div class="project-icon">✦</div>
+                <div class="project-info">
+                    <h3>Create With</h3>
+                    <p>Weekly newsletter + events for builders at the intersection of AI, no-code & growth</p>
+                </div>
+                <div class="project-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                </div>
+            </a>
+            <a href="https://maven.com" class="project-card reveal" target="_blank">
+                <div class="project-icon">◎</div>
+                <div class="project-info">
+                    <h3>Maven Workshops</h3>
+                    <p>Highly-rated live sessions teaching teams to design AI + automation systems</p>
+                </div>
+                <div class="project-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<div class="container"><hr class="divider"></div>
+
+<footer>
+    <div class="container">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <div class="footer-name">Matt Roberts</div>
+                <div class="footer-note">&copy; 2026 &middot; Barcelona</div>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.linkedin.com/in/mattjroberts" target="_blank">LinkedIn</a>
+                <a href="https://linktr.ee/Mattroberts" target="_blank">Linktree</a>
+                <a href="mailto:matt@happyoperators.com">Email</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, i * 80);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
